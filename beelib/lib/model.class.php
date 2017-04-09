@@ -1,5 +1,8 @@
 <?php
-
+	/*
+	模型类
+	操作数据库，进行curl操作
+	*/
 	class Bee_Db_Adapter{
 		private $select_sql;
 		public $is_prepare;
@@ -103,28 +106,11 @@
 			$this->prepare_data = NULL;
 		}
 	}
-
-	//使用medoo操作数据库
-	//需composer加载medoo库
-	class Bee_Db_Medoo extends Medoo\Medoo
-	{
-		public function __construct(){
-			$conf = conf::instance();
-			parent::__construct([
-			    'database_type' => $conf['Db_type'],
-			    'database_name' => $conf['Db_Name'],
-			    'server' => $conf['Db_Host'],
-			    'username' => $conf['Db_User'],
-			    'password' => $conf['Db_pwd'],
-			    'charset' => $conf['Db_set']
-			]);
-		}
-	}
 	
 
 	//表模型，对表进行操作
 	class Bee_Db_Table {
-		protected $_name;  //表名
+		protected $_name = 'text';  //表名
 		protected $_primary = 'id'; //主键默认是id
 		private $display_error;
 		private $pdo;
@@ -144,7 +130,7 @@
 			$stmt = $this->pdo->exec($sql);
 			//如果生发sql语法错误。
 			if ($this->display_error && $this->pdo->errorInfo()[0] !='00000'){
-				 throw new RuntimeException($this->pdo->errorInfo()[2]);
+				 die('<h1>error: '.$this->pdo->errorInfo()[2].'</h1>');
 			}
 			return $stmt;
 		}
@@ -353,7 +339,7 @@
       			}
       			$this->pdo->query('SET NAMES '.$this->Db_set);
 	       	} catch(PDOException $e) {
-	      		 throw new RuntimeException($e->getMessage());
+	      		 die('<h1>error: '.$e->getMessage().'</h1>');
 	    	}
 	  	}
 	}

@@ -12,18 +12,6 @@
 			$this->controller = $controller;
 			$this->action = $action;
 		}
-
-		//使用twig模版引擎
-		public function display($file){
-			Twig_Autoloader::register();
-			$loader = new Twig_Loader_Filesystem(APP.'/views/'.$this->controller);
-			$twig = new Twig_Environment($loader, array(
-			    'cache' => APP.'/views/cache',
-			));
-			$template = $twig->load($file.'.phtml');
-			$template->display($this->view? $this->view : NULL);
-			$this->is_display_view = true ; 
-		}
 		
 		public function view($key,$val){
 			$this->view[$key] = $val;
@@ -36,10 +24,10 @@
 				if (file_exists($path)){
 					include_once($path);
 				}else if ($this->is_display_error){
-					throw new RuntimeException('找不到视图文件！');
+					die('找不到视图文件！');
 				}
 			}else if ($this->is_display_error){
-				throw new RuntimeException('不能同时引入多次视图！');
+				die('<h1>error: 不能同时引入多次视图！</h1>');
 			}
 		}
 		public function redirect($url){

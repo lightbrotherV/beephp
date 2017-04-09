@@ -11,10 +11,5 @@
 	        "type": "composer",
 	        "url": "https://packagist.phpcomposer.com"
 	    }
-	},
-	"require": {
-		"filp/whoops": "1.*",
-		"catfan/Medoo": "^1.2",
-		"twig/twig": "*"
 	}
 }

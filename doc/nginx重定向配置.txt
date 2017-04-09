@@ -1,4 +1,3 @@
-
 phpstudyÅäÖÃ
 server {
         listen       80;
@@ -37,8 +36,6 @@ server {
         }
         
 }
-
-
 
 
 
