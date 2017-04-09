@@ -1,0 +1,74 @@
+
+phpstudy配置
+server {
+        listen       80;
+        server_name  ****;
+        root   "*****";
+        location / {
+            index  index.html index.htm index.php;
+            #autoindex  on;
+        }
+        
+        location ~ (\.inc\.php|\.tpl|\.sql|\.tpl\.php|\.db)$ {  
+            deny all;  
+        }  
+        location ~ \.htaccess {  
+            deny all;  
+        }  
+        
+        # Rewrite rule adapted from zendapp/public/.htaccess  
+        if (!-e $request_filename) {  
+            rewrite ^.*$ /index.php last;  
+        }  
+        #图片/js/css不显示解决  
+        location ~* ^.+\.(js|ico|gif|jpg|jpeg|pdf|png|css)$ {  
+            access_log   off;  
+            expires      7d;  
+        }  
+        
+        location ~ \.php(.*)$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+        }
+        
+}
+
+
+
+
+
+lnmp配置
+server {
+        listen          80;
+        server_name     ******;
+        index           index.php;
+        root            ******;
+        
+        # 设置expires和max-age的时间
+        location ~* "^.+\.(jpe?g|gif|css|png|js|ico|pdf|zip|tar|t?gz|mp3|wav|swf)$" {
+            expires         30d;
+            log_not_found   off;
+        }           
+        #设置不被防问的目录
+        location ~ ^/(application|library|var)/ {
+            deny all;
+        }
+        #将request指向index.php
+        location / {
+            index  index.php index.html index.htm;
+            if (-f $request_filename) {
+                break;
+            }
+            if (-d $request_filename) {
+                break;
+            }
+            rewrite ^(.+)$ /index.php last;
+        }
+        #引用PHP CGI
+  	include enable-php.conf;
+    }

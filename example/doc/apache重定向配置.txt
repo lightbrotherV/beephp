@@ -1,0 +1,14 @@
+在httpd.conf中
+1.把所有AllowOverride None 改成AllowOverride All
+2.去掉下面的注释
+LoadModule rewrite_module modules/mod_rewrite.so
+
+host配置也一样
+把所有AllowOverride None 改成AllowOverride All
+
+.htaccess配置
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
